@@ -14,7 +14,6 @@ const themeName = 'danielsmota-2025'
 const port = 8080
 
 const dir = `wp-content/themes/${themeName}`
-// const dir = `dist/${themeName}`
 
 const paths = {
   styles: {
