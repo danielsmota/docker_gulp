@@ -1,0 +1,24 @@
+:root {
+    --base-color: hsl(0, 0%, 95%);
+    --base-variant: hsl(0, 0%, 93%);
+    --base-content: hsl(0, 0%, 97%);
+    --text-color: hsl(0, 0%, 12%);
+    --primary-color: hsl(210, 89%, 29%);
+    --accent-color: hsl(24, 91%, 54%);
+    --dark-blue: hsl(202, 93%, 16%);
+    --link-color: hsl(149, 81%, 48%);
+    --hover: hsl(185, 55%, 59%);
+    --neutral-grey: hsl(0, 0%, 90%);
+    --button-hover: hsl(24, 100%, 50%);
+    --alert: hsl(51, 100%, 60%);
+    --fail: hsl(348, 88%, 59%);
+    --success: hsl(120, 100% 68.63%);
+}
+
+.darkmode {
+    --base-color: hsl(0, 0%, 12%);
+    --base-variant: hsl(0, 0%, 18%);
+    --base-content: hsl(0, 0%, 7%);
+    --base-client: hsl(0, 0%, 75%);
+    --text-color: hsl(0, 0%, 95%);
+}

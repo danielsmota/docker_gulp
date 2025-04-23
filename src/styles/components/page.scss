@@ -1,0 +1,15 @@
+@use "../util" as *;
+
+.site-main {
+    margin-block: rem(60);
+    min-height: rem(600);
+}
+
+article h1 {
+    font-size: rem(48);
+    margin-bottom: rem(24);
+}
+
+article p {
+    font-size: rem(16);
+}

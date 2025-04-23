@@ -1,0 +1,52 @@
+@use "../util" as *;
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: 1.1;
+}
+
+h1 {
+  margin: 0;
+  font-size: rem(52);
+  letter-spacing: -0.1ch;
+  line-height: 0.9;
+  color: var(--text-color);
+
+  @include breakpoint(medium) {
+    font-size: rem(96);
+  }
+
+  span {
+    color: var(--accent-color);
+  }
+}
+
+h2 {
+  font-size: rem(24);
+}
+
+p {
+  margin: 0;
+  font-size: rem(16);
+  font-weight: 300;
+  line-height: 1.4;
+  letter-spacing: -0.05ch;
+  color: var(--text-color);
+
+  @include breakpoint(medium) {
+    width: 100%;
+    font-size: rem(18);
+  }
+
+  br {
+    margin-bottom: rem(16);
+  }
+}
+
+a,
+a:visited,
+a:active {
+  text-decoration: none;
+}
