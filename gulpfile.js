@@ -1,4 +1,4 @@
-const { src, dest, series, task, parallel, watch } = require('gulp');
+const { src, dest, series, parallel, watch } = require('gulp');
 const sass = require('gulp-sass')(require('sass'))
 const babel = require('gulp-babel')
 const minify = require('gulp-minify')
@@ -6,7 +6,7 @@ const imagemin = require('gulp-imagemin')
 const rename = require('gulp-rename')
 const cleanCSS = require('gulp-clean-css')
 const gulpFilter = require('gulp-filter')
-const concat = require('gulp-concat')
+const zip = require('gulp-zip')
 const browsersync = require('browser-sync').create()
 const del = require('del')
 const path = require('path')
@@ -40,6 +40,10 @@ const paths = {
   thumb: {
     src: 'src/screenshot.png',
     dest: dir
+  },
+  dist: {
+    src: dir,
+    dest: 'dist/'
   }
 }
 
@@ -54,29 +58,20 @@ function bSync(done) {
 }
 
 function clean() {
-  return del(paths.php.dest, {
-    force: true,
-  })
+  return del([`${paths.dist.dest}/**`], { force: true });
 }
 
 function styles() {
-  const filterScss = gulpFilter('**/style.css', { restore: true });
+  const filterStyle = gulpFilter('**/style.css', { restore: true });
 
   return src(paths.styles.src)
-    .pipe(sass({
-      silenceDeprecations: ['legacy-js-api'],
-    }))
-    .pipe(filterScss)
+    .pipe(sass({ silenceDeprecations: ['legacy-js-api'] }))
+    .pipe(filterStyle)
     .pipe(dest(paths.styles.dest))
     .pipe(cleanCSS())
-    .pipe(
-      rename({
-        basename: 'style',
-        suffix: '.min',
-      })
-    )
+    .pipe(rename({ basename: 'style', suffix: '.min' }))
     .pipe(dest(paths.styles.dest))
-    .pipe(browsersync.stream());
+    .pipe(browsersync.stream())
 }
 
 function scripts() {
@@ -127,6 +122,23 @@ function thumb() {
     .pipe(browsersync.stream())
 }
 
+function dist() {
+  return src([
+    `${dir}/**/*`,
+    `!${dir}/**/*.map`,
+    `!${dir}/**/*.scss`,
+    `!${dir}/node_modules/**`,
+  ], { base: 'wp-content/themes', encoding: false })
+    .pipe(dest(paths.dist.dest))
+}
+
+// function zipTheme() {
+//   return src(`${paths.dist.dest}${themeName}/**/*`)
+//     .pipe(zip(`${themeName}.zip`))
+//     .pipe(dest(paths.dist.dest))
+// }
+
+
 function watchFiles() {
   watch(paths.scripts.src, scripts)
   watch(paths.styles.src, styles)
@@ -136,10 +148,23 @@ function watchFiles() {
   watch(paths.thumb.src, php)
 }
 
+const dev = parallel(bSync, watchFiles)
+
 const build = series(
   clean,
-  parallel(bSync, watchFiles, styles, scripts, images, php, thumb)
+  parallel(styles, scripts, images, php, thumb),
+  dist,
+  // zipTheme
 )
 
+exports.styles = styles
+exports.scripts = scripts
+exports.images = images
+exports.php = php
+exports.thumb = thumb
+exports.clean = clean
+exports.dist = dist
+// exports.zip = zipTheme
 exports.build = build
-exports.default = parallel(build)
+exports.dev = dev
+exports.default = series(build, dev)

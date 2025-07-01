@@ -1,0 +1,12 @@
+@use "../util" as *;
+
+h1 {
+  margin: 0;
+  margin-left: rem(-8);
+  margin-bottom: rem(8);
+  color: var(--accent-color);
+}
+
+h2 {
+  font-size: rem(36);
+}
